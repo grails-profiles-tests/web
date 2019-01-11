@@ -35,7 +35,7 @@ sdk install grails dev /home/travis/build/grails-profiles-tests/web/build/grails
 
 sdk install grails
 
-sdk use grails dev
+sdk use grails 3.3.9
 
 grails --version
 
