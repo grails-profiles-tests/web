@@ -65,7 +65,7 @@ task publishWebProfileToMavenLocal(type: GradleBuild) {
 task publishGrailsCoreToMavenLocal(type: GradleBuild) {
   dependsOn cloneGrailsCore
   buildFile = "${buildDir}/grails-core/build.gradle"
-  tasks = ['install']
+  tasks = ['assemble publishToMavenLocal']
 }
 
 task publishReposToMavenLocal {
