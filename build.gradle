@@ -6,6 +6,7 @@ plugins {
 }
 
 ext {
+  grailsCoreBranch = '3.3.x'
   profilesSlug = 'grails-profiles'
   profiles = [
           'base',
@@ -30,7 +31,7 @@ task cloneGrailsWrapper {
 task cloneGrailsCore {
   doLast() {
     def grgit = Grgit.clone(dir: "${buildDir}/grails-core".toString(),
-              uri: "https://github.com/grails/grails-core.git")
+              uri: "https://github.com/grails/grails-core.git", refToCheckout: grailsCoreBranch)
   }
 }
 
