@@ -1,0 +1,57 @@
+name: Java CI
+on:
+  push:
+    branches:
+      - master
+      - '[4-9]+.[1-9]+.x'
+      - configureWorkflow
+  pull_request:
+    branches:
+      - master
+      - '[4-9]+.[1-9]+.x'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: ['8']
+    env:
+      GRADLE_OPTS: -Xmx1500m -Dfile.encoding=UTF-8
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Optional setup step
+        run: |
+          [ -f ./profile-install.sh ] && ./profile-install.sh
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        java: ['8', '11']
+    env:
+      WORKSPACE: ${{ github.workspace }}
+      GRADLE_OPTS: -Xmx1500m -Dfile.encoding=UTF-8
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Set up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: ${{ matrix.java }}
+      - name: Run Tests
+        run: |
+          [ -f ./web.sh ] && ./web.sh
