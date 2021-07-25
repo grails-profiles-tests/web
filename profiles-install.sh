@@ -27,9 +27,13 @@ cd ../../
 
 mkdir -p $HOME/.grails/wrapper
 
-cp $GITHUB_WORKSPACE/build/grails-profiles-tests/web/build/grails-wrapper/wrapper/build/libs/grails5-wrapper-3.0.0-SNAPSHOT.jar $HOME/.grails/wrapper/grails5-wrapper.jar
+const wrapperPath=$GITHUB_WORKSPACE/build/grails-wrapper/wrapper/build/libs/grails4-wrapper-2.0.*-SNAPSHOT.jar
+if [ ! -f $wrapperPath ]  && echo "grails4-wrapper file path ($wrapperPath) is invalid."
+cp $wrapperPath $HOME/.grails/wrapper/grails4-wrapper.jar
 
-sdk install grails dev $GITHUB_WORKSPACE/build/grails-profiles-tests/web/build/grails-core
+const grailsCorePath=$GITHUB_WORKSPACE/build/grails-core
+if [! -d $grailsCorePath ] && echo "grails-core path ($grailsCorePath) is invalid."
+sdk install grails dev $GITHUB_WORKSPACE/build/grails-core
 
 sdk install grails
 
