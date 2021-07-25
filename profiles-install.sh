@@ -9,8 +9,6 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 echo sdkman_auto_answer=true > ~/.sdkman/etc/config
 
-source "/home/travis/.sdkman/bin/sdkman-init.sh"
-
 ./gradlew build --console=plain || EXIT_STATUS=$?
 
 if [ $EXIT_STATUS -ne 0 ]; then
@@ -29,9 +27,13 @@ cd ../../
 
 mkdir -p $HOME/.grails/wrapper
 
-cp /home/travis/build/grails-profiles-tests/web/build/grails-wrapper/wrapper/build/libs/grails4-wrapper-2.0.1.BUILD-SNAPSHOT.jar $HOME/.grails/wrapper/grails4-wrapper.jar
+const wrapperPath=$GITHUB_WORKSPACE/build/grails-wrapper/wrapper/build/libs/grails4-wrapper-2.0.*-SNAPSHOT.jar
+if [ ! -f $wrapperPath ]  && echo "grails4-wrapper file path ($wrapperPath) is invalid."
+cp $wrapperPath $HOME/.grails/wrapper/grails4-wrapper.jar
 
-sdk install grails dev /home/travis/build/grails-profiles-tests/web/build/grails-core
+const grailsCorePath=$GITHUB_WORKSPACE/build/grails-core
+if [! -d $grailsCorePath ] && echo "grails-core path ($grailsCorePath) is invalid."
+sdk install grails dev $GITHUB_WORKSPACE/build/grails-core
 
 sdk install grails
 
